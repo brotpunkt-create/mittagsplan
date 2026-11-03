@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mittagsplan</title>
+<meta name="theme-color" content="#23402E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2EC;--surface:#FFFFFF;--ink:#17231B;--muted:#64726A;--line:#DDE4DA;
+  --hero:#23402E;--hero-ink:#F4F8F1;--hero-muted:#B9CDBE;--accent:#E8A33D;--accent-ink:#23180A;
+  --cs:62%;--cl:89%;--ci:#1E2A22;--shade:rgba(15,25,18,.5);--shadow:0 1px 2px rgba(23,35,27,.06),0 6px 18px rgba(23,35,27,.06);
+  color-scheme:light;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#101612;--surface:#1A221D;--ink:#E9EFE7;--muted:#97A59C;--line:#29342D;
+    --hero:#1F3A29;--hero-ink:#EEF5EC;--hero-muted:#9DB8A4;--accent:#F0B556;--accent-ink:#23180A;
+    --cs:28%;--cl:27%;--ci:#EEF2EC;--shade:rgba(0,0,0,.6);--shadow:none;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101612;--surface:#1A221D;--ink:#E9EFE7;--muted:#97A59C;--line:#29342D;
+  --hero:#1F3A29;--hero-ink:#EEF5EC;--hero-muted:#9DB8A4;--accent:#F0B556;--accent-ink:#23180A;
+  --cs:28%;--cl:27%;--ci:#EEF2EC;--shade:rgba(0,0,0,.6);--shadow:none;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:1rem;line-height:1.45;-webkit-tap-highlight-color:transparent}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--hero)}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Kopfbereich */
+.hero{background:var(--hero);color:var(--hero-ink);border-radius:0 0 2rem 2rem;padding:1.2rem 1.25rem 1.6rem}
+.hero .wrap{max-width:38rem;margin:0 auto;position:relative}
+.art{position:absolute;right:-.4rem;top:-.3rem;width:108px;height:auto;pointer-events:none}
+.hero p{max-width:calc(100% - 112px)}
+.hero h1{position:relative;font-size:clamp(1.9rem,8.4vw,2.6rem);line-height:1;font-weight:780;letter-spacing:-.035em;margin:.4rem 0 .35rem;font-variation-settings:"opsz" 96}
+.hero p{margin:0;color:var(--hero-muted);font-size:1rem}
+.weeknav{display:flex;align-items:center;gap:.5rem;margin-top:1.1rem}
+.weeknav .lbl{flex:1;font-weight:620;font-size:1.05rem}
+.weeknav button{width:2.6rem;height:2.6rem;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:var(--hero-ink);font-size:1.3rem;display:grid;place-items:center}
+.weeknav .now{width:auto;border-radius:999px;padding:0 .9rem;font-size:.9rem;font-weight:600}
+.progress{display:flex;gap:4px;margin-top:1rem}
+.progress i{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.16)}
+.progress i.on{background:var(--accent)}
+.sec{border:1px solid var(--line);background:var(--bg);border-radius:.9rem;padding:.7rem 1rem;font-weight:600;font-size:1rem;white-space:nowrap}
+.card .row2{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.7rem}
+.card .row2 button{flex:1}
+.tg{display:flex;align-items:flex-start;gap:.65rem;margin-top:.9rem;font-size:.95rem;line-height:1.35}
+.tg input{width:1.3rem;height:1.3rem;margin:0;flex:none;accent-color:var(--accent)}
+.tg small{display:block;color:var(--muted);font-size:.85rem;margin-top:.15rem}
+.card .info{margin:0;color:var(--muted);font-size:.92rem}
+.card h2{font-size:1.1rem;margin:0 0 .3rem;font-weight:680}
+.hint{background:color-mix(in srgb,var(--accent) 22%,var(--surface));border-radius:1rem;padding:.7rem .8rem .7rem 1rem;margin-bottom:.8rem;display:flex;gap:.6rem;align-items:center;justify-content:space-between;font-size:.95rem}
+.hint button{border:0;background:var(--accent);color:var(--accent-ink);border-radius:.7rem;padding:.5rem .85rem;font-weight:650;white-space:nowrap}
+
+/* Statistik */
+.flist.stats li{display:grid;grid-template-columns:1.6rem 1fr auto;align-items:center;gap:.3rem .5rem;padding:.8rem 1rem}
+.stats .rk{color:var(--muted);font-weight:600;font-size:.9rem}
+.stats .ct{font-weight:720;font-size:1.05rem}
+.stats .bar{grid-column:2/-1;height:8px;border-radius:4px;background:var(--bg);overflow:hidden}
+.stats .bar i{display:block;height:100%;border-radius:4px;background:hsl(var(--h) 55% 58%)}
+.stats .last{grid-column:2/-1;color:var(--muted);font-size:.85rem}
+.flist.stats li.zero{opacity:.55}
+
+main{max-width:38rem;margin:0 auto;padding:1.1rem 1rem 7rem}
+
+/* Tage */
+.day{background:var(--surface);border-radius:1.3rem;padding:.9rem 1rem .95rem;margin-bottom:.7rem;box-shadow:var(--shadow);border:1px solid var(--line)}
+.day.past{opacity:.6}
+.dayhead{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.55rem}
+.dayhead .dl{font-weight:680;font-size:1.08rem}
+.dayhead .dt{color:var(--muted);font-size:.92rem}
+.pill{margin-left:auto;background:var(--accent);color:var(--accent-ink);font-size:.78rem;font-weight:700;border-radius:999px;padding:.12rem .6rem}
+.day.today{border:2px solid var(--accent)}
+.lunch{display:flex;flex-wrap:wrap;gap:.45rem;align-items:center}
+.tag{display:inline-flex;align-items:center;gap:.1rem;background:hsl(var(--h) var(--cs) var(--cl));color:var(--ci);border-radius:.9rem;padding:.35rem .25rem .35rem .85rem;font-size:.98rem;font-weight:560}
+.tag button{border:0;background:none;width:1.8rem;height:1.8rem;border-radius:50%;color:inherit;opacity:.55;font-size:1.05rem;line-height:1}
+.add{border:1.5px dashed var(--line);background:none;color:var(--muted);font-weight:600;border-radius:.9rem;padding:.4rem .85rem;font-size:.95rem}
+.add.big{width:100%;padding:.75rem;text-align:left;border-radius:1rem}
+
+/* Einstellungen */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:1.3rem;padding:1rem;box-shadow:var(--shadow);margin-bottom:1.4rem}
+.card label{display:block;font-size:.9rem;color:var(--muted);margin-bottom:.45rem}
+.inrow{display:flex;gap:.5rem}
+.field{flex:1;min-width:0;width:100%;border:1px solid var(--line);background:var(--bg);border-radius:.9rem;padding:.7rem .85rem;font-size:1rem}
+.primary{border:0;background:var(--hero);color:var(--hero-ink);border-radius:.9rem;padding:.7rem 1.1rem;font-weight:650;font-size:1rem;white-space:nowrap}
+.sub{display:flex;justify-content:space-between;align-items:baseline;margin:0 .25rem .55rem}
+.sub h2{font-size:1.15rem;margin:0;font-weight:680}
+.sub span{color:var(--muted);font-size:.9rem}
+.flist{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:1.3rem;overflow:hidden;box-shadow:var(--shadow)}
+.flist li{display:flex;align-items:center;gap:.6rem;padding:.4rem .5rem .4rem 1rem;border-top:1px solid var(--line)}
+.flist li:first-child{border-top:0}
+.dot{width:.85rem;height:.85rem;border-radius:50%;background:hsl(var(--h) 55% 62%);flex:none}
+.flist .nm{flex:1;min-width:0;overflow-wrap:anywhere}
+.icon{border:0;background:none;color:var(--muted);width:2.4rem;height:2.4rem;border-radius:50%;font-size:1.05rem}
+.ghost{display:block;margin:1.5rem auto 0;border:0;background:none;color:var(--muted);font-size:.92rem;text-decoration:underline;text-underline-offset:3px}
+.note{color:var(--muted);font-size:.98rem;margin:.25rem .25rem 1rem}
+
+/* Navigation */
+nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(.9rem + env(safe-area-inset-bottom,0px));z-index:20;
+  background:var(--ink);border-radius:999px;padding:.35rem;display:flex;gap:.25rem;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+nav button{border:0;background:none;color:var(--bg);opacity:.7;border-radius:999px;padding:.6rem .85rem;font-size:.9rem;white-space:nowrap;font-weight:600;display:flex;align-items:center;gap:.4rem}
+nav button.on{background:var(--bg);color:var(--ink);opacity:1}
+
+/* Auswahl */
+.shade{position:fixed;inset:0;background:var(--shade);z-index:30;opacity:0;pointer-events:none;transition:opacity .2s}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:31;max-width:38rem;margin:0 auto;background:var(--surface);
+  border-radius:1.6rem 1.6rem 0 0;max-height:85%;display:flex;flex-direction:column;
+  transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1);padding-bottom:env(safe-area-inset-bottom,0px)}
+.open .shade{opacity:1;pointer-events:auto}
+.open .sheet{transform:none}
+.grip{width:2.5rem;height:.3rem;border-radius:1rem;background:var(--line);margin:.6rem auto 0}
+.sheet .top{padding:.6rem 1rem .8rem;display:grid;gap:.7rem}
+.sheet .row{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.sheet h2{font-size:1.3rem;margin:0;font-weight:700}
+.sheet .body{overflow-y:auto;padding:0 1rem 1.2rem;-webkit-overflow-scrolling:touch}
+.picks{display:flex;flex-wrap:wrap;gap:.5rem}
+.pick{border:1.5px solid var(--line);background:var(--surface);border-radius:.9rem;padding:.6rem .95rem;font-size:1rem;font-weight:560;transition:background .15s,border-color .15s}
+.pick.in{background:hsl(var(--h) var(--cs) var(--cl));border-color:transparent;color:var(--ci)}
+.pick.in::before{content:"✓ ";font-weight:800}
+.toast{position:fixed;left:50%;bottom:calc(5.5rem + env(safe-area-inset-bottom,0px));transform:translate(-50%,1rem);background:var(--ink);color:var(--bg);
+  padding:.55rem 1rem;border-radius:999px;font-size:.9rem;opacity:0;transition:.2s;z-index:40;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap" id="hero"></div></header>
+<main id="app"></main>
+<nav>
+  <button data-tab="plan">🍽️ Plan</button>
+  <button data-tab="stats">📊 Statistik</button>
+  <button data-tab="settings">⚙️ Einstellungen</button>
+</nav>
+<div id="sheetwrap">
+  <div class="shade" data-act="close"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheettitle">
+    <div class="grip"></div>
+    <div class="top">
+      <div class="row"><h2 id="sheettitle"></h2><button class="primary" data-act="close" style="padding:.5rem 1.1rem">Fertig</button></div>
+      <input class="field" id="search" type="search" placeholder="Suchen" autocomplete="off">
+    </div>
+    <div class="body" id="sheetbody"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<input type="file" id="importfile" accept=".json,application/json" hidden>
+
+<script>
+const KEY='mittagsplan-v1';
+const DL=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
+const MON=['Jan.','Feb.','März','Apr.','Mai','Juni','Juli','Aug.','Sep.','Okt.','Nov.','Dez.'];
+
+let S=load();
+let tab=S.foods.length?'plan':'settings';
+let today=new Date();today.setHours(0,0,0,0);
+let weekStart=monday(today);
+let sheetDay=null;
+
+function uid(){return Math.random().toString(36).slice(2,9)}
+function load(){
+  try{const r=localStorage.getItem(KEY);if(r){const s=JSON.parse(r);if(s&&Array.isArray(s.foods)&&s.plan)return {foods:s.foods,plan:s.plan,lastBackup:s.lastBackup||null,auto:s.auto===true}}}catch(e){}
+  return {foods:[],plan:{},lastBackup:null,auto:false};
+}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('Speichern hat nicht geklappt');return}
+  const d=key(new Date());
+  if(S.auto&&S.lastBackup!==d&&(S.foods.length||Object.keys(S.plan).length)){
+    S.lastBackup=d;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
+    download();toast('Automatisch gesichert');
+  }
+}
+function monday(d){const m=new Date(d);m.setDate(m.getDate()-(m.getDay()+6)%7);return m}
+function key(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
+function isoWeek(d){const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=t.getUTCDay()||7;t.setUTCDate(t.getUTCDate()+4-day);const y=new Date(Date.UTC(t.getUTCFullYear(),0,1));return Math.ceil(((t-y)/864e5+1)/7)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function hue(s){let h=0;for(const c of s.toLowerCase())h=(h*31+c.charCodeAt(0))%360;return h}
+function food(id){return S.foods.find(f=>f.id===id)}
+function nameOf(it){const f=food(it.f);return f?f.name:it.name}
+function list(k,create){if(!S.plan[k]){if(!create)return [];S.plan[k]=[]}return S.plan[k]}
+function sorted(){return [...S.foods].sort((a,b)=>a.name.localeCompare(b.name,'de'))}
+function range(){const e=addDays(weekStart,6);
+  return (weekStart.getMonth()===e.getMonth()?weekStart.getDate()+'.':weekStart.getDate()+'. '+MON[weekStart.getMonth()])+' bis '+e.getDate()+'. '+MON[e.getMonth()]}
+let tt;function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),1600)}
+
+function render(){
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
+  const V={plan:[heroPlan,planView],stats:[heroStats,statsView],settings:[heroSettings,settingsView]}[tab];
+  document.getElementById('hero').innerHTML=ART+V[0]();
+  document.getElementById('app').innerHTML=V[1]();
+}
+
+function heroPlan(){
+  let filled=0,bars='';
+  for(let i=0;i<7;i++){const on=list(key(addDays(weekStart,i))).length>0;filled+=on;bars+=`<i class="${on?'on':''}"></i>`}
+  const isNow=key(weekStart)===key(monday(today));
+  return `<h1>Mittagessen</h1><p>${filled===7?'Die ganze Woche ist geplant.':filled+' von 7 Tagen geplant'}</p>
+    <div class="weeknav"><span class="lbl">KW ${isoWeek(weekStart)}<br><span style="font-weight:400;color:var(--hero-muted);font-size:.92rem">${range()}</span></span>
+    ${isNow?'':'<button class="now" data-act="today">Heute</button>'}
+    <button data-act="prev" aria-label="Vorige Woche">‹</button><button data-act="next" aria-label="Nächste Woche">›</button></div>
+    <div class="progress" aria-hidden="true">${bars}</div>`;
+}
+function heroSettings(){
+  return `<h1>Einstellungen</h1><p>Lege fest, was du mittags zur Auswahl haben möchtest.</p>`;
+}
+
+const ART=`<svg class="art" viewBox="0 0 120 100" aria-hidden="true">
+  <g fill="none" stroke="#B9CDBE" stroke-width="2.5" stroke-linecap="round" opacity=".8">
+    <path d="M52 18c-4-4 4-7 0-12"/><path d="M62 16c-4-4 4-7 0-12"/><path d="M72 18c-4-4 4-7 0-12"/>
+  </g>
+  <g fill="none" stroke="#F4F8F1" stroke-width="3" stroke-linecap="round">
+    <path d="M10 30v12M15 30v12M20 30v12M10 42q5 6 10 0M15 45v46"/>
+    <path d="M108 91V30q-7 8-7 24q0 6 7 6"/>
+  </g>
+  <circle cx="62" cy="60" r="33" fill="#F4F8F1"/>
+  <circle cx="62" cy="60" r="25" fill="none" stroke="#D6E2D3" stroke-width="1.5"/>
+  <ellipse cx="55" cy="64" rx="12" ry="8.5" fill="#FFF4D9" stroke="#EBD9AE" stroke-width="1"/>
+  <rect x="60" y="46" width="20" height="12" rx="5" fill="#E8A33D" transform="rotate(-14 70 52)"/>
+  <circle cx="74" cy="68" r="5" fill="#E2574C"/><circle cx="68" cy="74" r="4" fill="#E2574C"/>
+  <path d="M46 50q6-8 12 0q-6 6-12 0z" fill="#6FA86A"/><path d="M78 62q7-5 10 2q-7 4-10-2z" fill="#6FA86A"/>
+</svg>`;
+
+function fmtDay(k){const d=new Date(k+'T00:00');return d.getDate()+'. '+MON[d.getMonth()]+(d.getFullYear()!==today.getFullYear()?' '+d.getFullYear():'')}
+function statData(){
+  const agg={};let days=0,total=0;
+  for(const k in S.plan){const l=S.plan[k];if(!l.length)continue;days++;
+    for(const it of l){const n=nameOf(it);total++;const a=agg[n]||(agg[n]={n:0,last:k});a.n++;if(k>a.last)a.last=k}}
+  for(const f of S.foods)if(!agg[f.name])agg[f.name]={n:0,last:null};
+  const rows=Object.entries(agg).sort((a,b)=>b[1].n-a[1].n||a[0].localeCompare(b[0],'de'));
+  return {rows,days,total};
+}
+function heroStats(){
+  const {rows,days,total}=statData();
+  const top=rows.length&&rows[0][1].n?rows[0][0]:null;
+  return `<h1>Statistik</h1><p>${total} ${total===1?'Eintrag':'Einträge'} an ${days} ${days===1?'Tag':'Tagen'} geplant${top?'. Am häufigsten: '+esc(top):''}</p>`;
+}
+function statsView(){
+  const {rows}=statData();
+  if(!rows.length)return `<p class="note">Noch keine Daten. Sobald du Mittagessen planst, siehst du hier, wie oft du was gewählt hast.</p>`;
+  const max=rows[0][1].n||1;
+  return `<div class="sub"><h2>Wie oft geplant</h2><span>alle Wochen</span></div><ul class="flist stats">`+rows.map(([n,a],i)=>`<li class="${a.n?'':'zero'}" style="--h:${hue(n)}"><span class="rk">${a.n?i+1+'.':''}</span><span class="nm">${esc(n)}</span><span class="ct">${a.n}×</span><span class="bar"><i style="width:${a.n/max*100}%"></i></span><span class="last">${a.n?'Zuletzt am '+fmtDay(a.last):'Noch nie geplant'}</span></li>`).join('')+`</ul>`;
+}
+
+function needBackup(){
+  if(!S.foods.length&&!Object.keys(S.plan).length)return false;
+  return !S.lastBackup||(today-new Date(S.lastBackup+'T00:00'))/864e5>=30;
+}
+function backupHtml(){
+  return `<div class="card" style="margin-top:1.4rem"><h2>Datensicherung</h2>
+    <p class="info">${S.lastBackup?'Letzte Sicherung am '+fmtDay(S.lastBackup)+'.':'Noch keine Sicherung erstellt.'} Die Sicherung landet als Datei in deinen Downloads und lässt sich jederzeit wieder einlesen.</p>
+    <div class="row2"><button class="primary" data-act="export">Sicherung speichern</button><button class="sec" data-act="import">Sicherung laden</button></div>
+    <label class="tg"><input type="checkbox" id="autobk" ${S.auto?'checked':''}><span>Automatisch sichern<small>Bei der ersten Änderung eines Tages wird eine Sicherung in deinen Downloads abgelegt.</small></span></label></div>`;
+}
+function download(){
+  const data=JSON.stringify({app:'mittagsplan',v:1,date:new Date().toISOString(),foods:S.foods,plan:S.plan});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));
+  a.download='Mittagsplan-Sicherung-'+key(new Date())+'.json';
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);
+}
+function exportData(){
+  download();S.lastBackup=key(new Date());
+  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
+  render();toast('Sicherung gespeichert');
+}
+document.addEventListener('change',e=>{
+  if(e.target.id!=='autobk')return;
+  S.auto=e.target.checked;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(err){}
+  toast(S.auto?'Automatische Sicherung an':'Automatische Sicherung aus');
+});
+document.getElementById('importfile').addEventListener('change',e=>{
+  const file=e.target.files[0];e.target.value='';if(!file)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const d=JSON.parse(r.result);
+      if(!d||!Array.isArray(d.foods)||typeof d.plan!=='object')throw 0;
+      const when=d.date?' vom '+fmtDay(key(new Date(d.date))):'';
+      if(!confirm('Sicherung'+when+' laden? Die aktuellen Daten in der App werden dabei ersetzt.'))return;
+      S={foods:d.foods,plan:d.plan,lastBackup:S.lastBackup,auto:S.auto};save();render();toast('Sicherung geladen');
+    }catch(err){toast('Diese Datei ist keine gültige Sicherung')}
+  };
+  r.readAsText(file);
+});
+
+function planView(){
+  let h='';
+  if(needBackup())h+=`<div class="hint"><span>${S.lastBackup?'Deine letzte Sicherung ist über einen Monat alt.':'Sichere deine Daten, damit nichts verloren geht.'}</span><button data-act="export">Sichern</button></div>`;
+  if(!S.foods.length)h+=`<p class="note">Lege zuerst in den Einstellungen deine Lebensmittel an.</p>`;
+  for(let i=0;i<7;i++){
+    const d=addDays(weekStart,i),k=key(d),items=list(k);
+    const isToday=k===key(today),past=d<today;
+    h+=`<section class="day${isToday?' today':''}${past?' past':''}"><div class="dayhead"><span class="dl">${DL[i]}</span><span class="dt">${d.getDate()}. ${MON[d.getMonth()]}</span>${isToday?'<span class="pill">Heute</span>':''}</div><div class="lunch">`;
+    h+=items.map((it,j)=>{const n=nameOf(it);return `<span class="tag" style="--h:${hue(n)}">${esc(n)}<button data-act="rm" data-day="${k}" data-i="${j}" aria-label="${esc(n)} entfernen">×</button></span>`}).join('');
+    h+=items.length?`<button class="add" data-act="open" data-day="${k}">+</button>`:`<button class="add big" data-act="open" data-day="${k}">+ Mittagessen auswählen</button>`;
+    h+=`</div></section>`;
+  }
+  return h;
+}
+
+function settingsView(){
+  let h=`<div class="card"><label for="fname">Neues Lebensmittel</label>
+    <div class="inrow"><input class="field" id="fname" placeholder="z. B. Hähnchen mit Reis" autocomplete="off" enterkeyhint="done"><button class="primary" data-act="addfood">Hinzufügen</button></div></div>`;
+  h+=`<div class="sub"><h2>Deine Auswahl</h2><span>${S.foods.length} ${S.foods.length===1?'Eintrag':'Einträge'}</span></div>`;
+  if(!S.foods.length)return h+`<p class="note">Noch leer. Alles, was du oben einträgst, steht dir danach im Plan zur Auswahl.</p>`+backupHtml();
+  h+=`<ul class="flist">`+sorted().map(f=>`<li><span class="dot" style="--h:${hue(f.name)}"></span><span class="nm">${esc(f.name)}</span><button class="icon" data-act="rename" data-id="${f.id}" aria-label="${esc(f.name)} umbenennen">✎</button><button class="icon" data-act="delfood" data-id="${f.id}" aria-label="${esc(f.name)} löschen">×</button></li>`).join('')+`</ul>`;
+  return h+backupHtml()+`<button class="ghost" data-act="clearplan">Gesamten Plan leeren</button>`;
+}
+
+function sheetRender(){
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  const items=list(sheetDay);
+  const fs=sorted().filter(f=>f.name.toLowerCase().includes(q));
+  let h;
+  if(!S.foods.length)h=`<p class="note">Du hast noch keine Lebensmittel angelegt.</p><button class="primary" data-act="gosettings">Zu den Einstellungen</button>`;
+  else if(!fs.length)h=`<p class="note">Nichts gefunden. Neue Einträge legst du in den Einstellungen an.</p>`;
+  else h=`<div class="picks">`+fs.map(f=>`<button class="pick${items.some(x=>x.f===f.id)?' in':''}" style="--h:${hue(f.name)}" data-act="pick" data-id="${f.id}">${esc(f.name)}</button>`).join('')+`</div>`;
+  document.getElementById('sheetbody').innerHTML=h;
+}
+function openSheet(k){
+  sheetDay=k;const d=new Date(k+'T00:00');
+  document.getElementById('sheettitle').textContent=DL[(d.getDay()+6)%7]+', '+d.getDate()+'. '+MON[d.getMonth()];
+  document.getElementById('search').value='';
+  sheetRender();document.getElementById('sheetwrap').classList.add('open');
+}
+function closeSheet(){document.getElementById('sheetwrap').classList.remove('open');sheetDay=null;render()}
+
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-tab],[data-act]');if(!t)return;
+  if(t.dataset.tab){tab=t.dataset.tab;render();scrollTo(0,0);return}
+  const a=t.dataset.act;
+  if(a==='prev'||a==='next'){weekStart=addDays(weekStart,a==='prev'?-7:7);render()}
+  else if(a==='export')exportData();
+  else if(a==='import')document.getElementById('importfile').click();
+  else if(a==='today'){weekStart=monday(today);render()}
+  else if(a==='open')openSheet(t.dataset.day);
+  else if(a==='close')closeSheet();
+  else if(a==='gosettings'){closeSheet();tab='settings';render()}
+  else if(a==='pick'){const f=food(t.dataset.id),l=list(sheetDay,true),j=l.findIndex(x=>x.f===f.id);
+    if(j>=0)l.splice(j,1);else l.push({f:f.id,name:f.name});save();sheetRender()}
+  else if(a==='rm'){list(t.dataset.day).splice(+t.dataset.i,1);save();render()}
+  else if(a==='addfood'){const inp=document.getElementById('fname'),n=inp.value.trim();
+    if(!n){toast('Bitte einen Namen eingeben');inp.focus();return}
+    if(S.foods.some(f=>f.name.toLowerCase()===n.toLowerCase())){toast('„'+n+'“ gibt es schon');return}
+    S.foods.push({id:uid(),name:n});save();render();toast('„'+n+'“ hinzugefügt');document.getElementById('fname').focus()}
+  else if(a==='rename'){const f=food(t.dataset.id),n=(prompt('Neuer Name',f.name)||'').trim();
+    if(!n||n===f.name)return;
+    if(S.foods.some(x=>x.id!==f.id&&x.name.toLowerCase()===n.toLowerCase())){toast('„'+n+'“ gibt es schon');return}
+    f.name=n;save();render()}
+  else if(a==='delfood'){const f=food(t.dataset.id);
+    if(confirm('„'+f.name+'“ löschen? Bereits geplante Tage behalten den Eintrag.')){S.foods=S.foods.filter(x=>x.id!==f.id);save();render()}}
+  else if(a==='clearplan'){if(confirm('Alle geplanten Tage löschen? Deine Lebensmittel bleiben erhalten.')){S.plan={};save();toast('Plan geleert')}}
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&sheetDay)closeSheet();
+  if(e.key==='Enter'&&e.target.id==='fname')document.querySelector('[data-act="addfood"]').click();
+});
+document.getElementById('search').addEventListener('input',sheetRender);
+render();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{});
+</script>
+</body>
+</html>
