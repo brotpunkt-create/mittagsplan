@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#EEF2EC;--surface:#FFFFFF;--ink:#17231B;--muted:#64726A;--line:#DDE4DA;
+  --warn:#A8551A;--leaf:#3F6B45;--bg:#EEF2EC;--surface:#FFFFFF;--ink:#17231B;--muted:#64726A;--line:#DDE4DA;
   --hero:#23402E;--hero-ink:#F4F8F1;--hero-muted:#B9CDBE;--accent:#E8A33D;--accent-ink:#23180A;
   --cs:62%;--cl:89%;--ci:#1E2A22;--shade:rgba(15,25,18,.5);--shadow:0 1px 2px rgba(23,35,27,.06),0 6px 18px rgba(23,35,27,.06);
   color-scheme:light;
@@ -21,14 +21,14 @@
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#101612;--surface:#1A221D;--ink:#E9EFE7;--muted:#97A59C;--line:#29342D;
+    --warn:#F0B556;--leaf:#8CC08F;--bg:#101612;--surface:#1A221D;--ink:#E9EFE7;--muted:#97A59C;--line:#29342D;
     --hero:#1F3A29;--hero-ink:#EEF5EC;--hero-muted:#9DB8A4;--accent:#F0B556;--accent-ink:#23180A;
     --cs:28%;--cl:27%;--ci:#EEF2EC;--shade:rgba(0,0,0,.6);--shadow:none;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#101612;--surface:#1A221D;--ink:#E9EFE7;--muted:#97A59C;--line:#29342D;
+  --warn:#F0B556;--leaf:#8CC08F;--bg:#101612;--surface:#1A221D;--ink:#E9EFE7;--muted:#97A59C;--line:#29342D;
   --hero:#1F3A29;--hero-ink:#EEF5EC;--hero-muted:#9DB8A4;--accent:#F0B556;--accent-ink:#23180A;
   --cs:28%;--cl:27%;--ci:#EEF2EC;--shade:rgba(0,0,0,.6);--shadow:none;
   color-scheme:dark;
@@ -39,7 +39,8 @@ body{margin:0;background:var(--bg);color:var(--ink);
   font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   font-size:1rem;line-height:1.45;-webkit-tap-highlight-color:transparent}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--hero)}
-button,input{font:inherit;color:inherit}
+button,input,textarea{font:inherit;color:inherit}
+.hero h1{max-width:calc(100% - 96px);overflow-wrap:anywhere}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
@@ -112,10 +113,44 @@ main{max-width:38rem;margin:0 auto;padding:1.1rem 1rem 7rem}
 .note{color:var(--muted);font-size:.98rem;margin:.25rem .25rem 1rem}
 
 /* Navigation */
-nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(.9rem + env(safe-area-inset-bottom,0px));z-index:20;
-  background:var(--ink);border-radius:999px;padding:.35rem;display:flex;gap:.25rem;box-shadow:0 8px 24px rgba(0,0,0,.18)}
-nav button{border:0;background:none;color:var(--bg);opacity:.7;border-radius:999px;padding:.6rem .85rem;font-size:.9rem;white-space:nowrap;font-weight:600;display:flex;align-items:center;gap:.4rem}
+nav{position:fixed;left:.6rem;right:.6rem;bottom:calc(.6rem + env(safe-area-inset-bottom,0px));z-index:20;max-width:36rem;margin:0 auto;
+  background:var(--ink);border-radius:1.4rem;padding:.35rem;display:grid;grid-template-columns:repeat(5,1fr);gap:.2rem;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+nav button{border:0;background:none;color:var(--bg);opacity:.72;border-radius:1.1rem;padding:.45rem .1rem .4rem;display:flex;flex-direction:column;align-items:center;gap:.1rem;font-size:.72rem;font-weight:600;min-width:0}
+nav button span{font-size:1.2rem;line-height:1.1}
 nav button.on{background:var(--bg);color:var(--ink);opacity:1}
+
+/* Gerichte & Rezepte */
+.badge{font-size:.8rem;color:var(--muted);white-space:nowrap}
+.badge.ok{color:var(--leaf,#3F6B45)}
+.flist li.link{cursor:pointer;padding-top:.75rem;padding-bottom:.75rem}
+.chev{color:var(--muted);font-size:1.2rem;padding:0 .4rem}
+.back{border:0;background:rgba(255,255,255,.12);color:var(--hero-ink);border-radius:999px;padding:.45rem .9rem .45rem .7rem;font-size:.92rem;font-weight:600;margin-bottom:.4rem}
+.ing{display:grid;grid-template-columns:4.2rem 4.6rem 1fr 2.2rem;gap:.4rem;align-items:center;margin-bottom:.45rem}
+.ing .field{padding:.6rem .55rem}
+.ingh{display:grid;grid-template-columns:4.2rem 4.6rem 1fr 2.2rem;gap:.4rem;font-size:.8rem;color:var(--muted);margin:.2rem 0 .3rem}
+textarea.field{min-height:9rem;resize:vertical;line-height:1.45}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--bg);border:1px solid var(--line);border-radius:.9rem;padding:.25rem;gap:.25rem}
+.seg button{border:0;background:none;border-radius:.7rem;padding:.6rem .3rem;font-weight:600;color:var(--muted)}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.danger{border:0;background:none;color:#C0392B;font-weight:600;padding:.8rem;display:block;margin:1rem auto 0}
+.rlist{margin:.2rem 0 1rem;padding:0;list-style:none}
+.rlist li{display:flex;gap:.6rem;padding:.45rem 0;border-top:1px solid var(--line)}
+.rlist li:first-child{border-top:0}
+.rlist .am{min-width:5.5rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.steps{white-space:pre-wrap;margin:.2rem 0 0}
+.tag .open{border:0;background:none;padding:0;width:auto;height:auto;font:inherit;color:inherit;opacity:1;font-size:inherit;text-align:left}
+
+/* Einkauf */
+.shop li{cursor:pointer;padding-top:.65rem;padding-bottom:.65rem;align-items:flex-start}
+.shop input{width:1.3rem;height:1.3rem;accent-color:var(--leaf,#3F6B45);margin:.1rem .4rem 0 0;flex:none}
+.shop .nm small{display:block;color:var(--muted);font-size:.82rem;margin-top:.1rem}
+.shop .due{font-weight:650;color:var(--ink)}
+.shop .due.soon{color:var(--warn)}
+.shop li.done .due{color:var(--muted)}
+.shop .q{font-weight:650;white-space:nowrap;padding:0 .5rem 0 .3rem;font-variant-numeric:tabular-nums}
+.shop li.done .nm,.shop li.done .q{text-decoration:line-through;color:var(--muted)}
+.miss{background:var(--surface);border:1px dashed var(--line);border-radius:1rem;padding:.75rem 1rem;margin-top:1rem;font-size:.92rem;color:var(--muted)}
+.miss button{border:0;background:none;color:var(--accent);font-weight:650;padding:0;text-decoration:underline;text-underline-offset:2px}
 
 /* Auswahl */
 .shade{position:fixed;inset:0;background:var(--shade);z-index:30;opacity:0;pointer-events:none;transition:opacity .2s}
@@ -143,9 +178,11 @@ nav button.on{background:var(--bg);color:var(--ink);opacity:1}
 <header class="hero"><div class="wrap" id="hero"></div></header>
 <main id="app"></main>
 <nav>
-  <button data-tab="plan">🍽️ Plan</button>
-  <button data-tab="stats">📊 Statistik</button>
-  <button data-tab="settings">⚙️ Einstellungen</button>
+  <button data-tab="plan"><span>🍽️</span>Plan</button>
+  <button data-tab="shop"><span>🛒</span>Einkauf</button>
+  <button data-tab="dishes"><span>📖</span>Gerichte</button>
+  <button data-tab="stats"><span>📊</span>Statistik</button>
+  <button data-tab="settings"><span>⚙️</span>Optionen</button>
 </nav>
 <div id="sheetwrap">
   <div class="shade" data-act="close"></div>
@@ -158,32 +195,48 @@ nav button.on{background:var(--bg);color:var(--ink);opacity:1}
     <div class="body" id="sheetbody"></div>
   </div>
 </div>
+<div id="recipewrap">
+  <div class="shade" data-act="rclose"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="rtitle">
+    <div class="grip"></div>
+    <div class="top"><div class="row"><h2 id="rtitle"></h2><button class="primary" data-act="rclose" style="padding:.5rem 1.1rem">Schließen</button></div></div>
+    <div class="body" id="rbody"></div>
+  </div>
+</div>
+<datalist id="units"><option>g</option><option>kg</option><option>ml</option><option>l</option><option>Stk.</option><option>EL</option><option>TL</option><option>Prise</option><option>Bund</option><option>Dose</option><option>Packung</option><option>Zehe</option></datalist>
 <div class="toast" id="toast"></div>
 <input type="file" id="importfile" accept=".json,application/json" hidden>
 
 <script>
 const KEY='mittagsplan-v1';
+const DN=['Mo','Di','Mi','Do','Fr','Sa','So'];
 const DL=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
 const MON=['Jan.','Feb.','März','Apr.','Mai','Juni','Juli','Aug.','Sep.','Okt.','Nov.','Dez.'];
 
 let S=load();
-let tab=S.foods.length?'plan':'settings';
+let tab=S.foods.length?'plan':'dishes';
 let today=new Date();today.setHours(0,0,0,0);
 let weekStart=monday(today);
-let sheetDay=null;
+let sheetDay=null,editId=null,recipeId=null,orderRef=null;
 
 function uid(){return Math.random().toString(36).slice(2,9)}
-function load(){
-  try{const r=localStorage.getItem(KEY);if(r){const s=JSON.parse(r);if(s&&Array.isArray(s.foods)&&s.plan)return {foods:s.foods,plan:s.plan,lastBackup:s.lastBackup||null,auto:s.auto===true}}}catch(e){}
-  return {foods:[],plan:{},lastBackup:null,auto:false};
+function norm(s){
+  const o={foods:[],plan:{},lastBackup:null,auto:false,checked:{},extra:{},restaurants:[],theme:'auto'};
+  if(s&&Array.isArray(s.foods))o.foods=s.foods.map(f=>({id:f.id||uid(),name:String(f.name||''),ingredients:Array.isArray(f.ingredients)?f.ingredients:[],steps:f.steps||''}));
+  if(s&&s.plan&&typeof s.plan==='object')o.plan=s.plan;
+  if(s&&s.checked&&typeof s.checked==='object')o.checked=s.checked;
+  if(s&&s.extra&&typeof s.extra==='object')o.extra=s.extra;
+  if(s&&Array.isArray(s.restaurants))o.restaurants=s.restaurants.map(r=>({id:r.id||uid(),name:String(r.name||'')}));
+  if(s&&['light','dark'].includes(s.theme))o.theme=s.theme;
+  if(s){o.lastBackup=s.lastBackup||null;o.auto=s.auto===true}
+  return o;
 }
+function load(){try{const r=localStorage.getItem(KEY);if(r)return norm(JSON.parse(r))}catch(e){}return norm(null)}
+function store(){try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){toast('Speichern hat nicht geklappt');return false}}
 function save(){
-  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('Speichern hat nicht geklappt');return}
+  if(!store())return;
   const d=key(new Date());
-  if(S.auto&&S.lastBackup!==d&&(S.foods.length||Object.keys(S.plan).length)){
-    S.lastBackup=d;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
-    download();toast('Automatisch gesichert');
-  }
+  if(S.auto&&S.lastBackup!==d&&(S.foods.length||Object.keys(S.plan).length)){S.lastBackup=d;store();download();toast('Automatisch gesichert')}
 }
 function monday(d){const m=new Date(d);m.setDate(m.getDate()-(m.getDay()+6)%7);return m}
 function key(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
@@ -192,33 +245,20 @@ function isoWeek(d){const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.get
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function hue(s){let h=0;for(const c of s.toLowerCase())h=(h*31+c.charCodeAt(0))%360;return h}
 function food(id){return S.foods.find(f=>f.id===id)}
-function nameOf(it){const f=food(it.f);return f?f.name:it.name}
+function rest(id){return S.restaurants.find(r=>r.id===id)}
+function nameOf(it){
+  if(it.f==='order'){if(!it.r)return '🛵 Bestellen';const r=rest(it.r);return '🛵 '+(r?r.name:(it.rname||'Bestellt'))}
+  const f=food(it.f);return f?f.name:it.name}
+function applyTheme(){const r=document.documentElement;if(S.theme==='auto')r.removeAttribute('data-theme');else r.dataset.theme=S.theme}
 function list(k,create){if(!S.plan[k]){if(!create)return [];S.plan[k]=[]}return S.plan[k]}
 function sorted(){return [...S.foods].sort((a,b)=>a.name.localeCompare(b.name,'de'))}
+function num(v){const n=parseFloat(String(v).replace(',','.'));return isFinite(n)?n:null}
+function fmtNum(n){return (Math.round(n*100)/100).toLocaleString('de-DE')}
+function fmtDay(k){const d=new Date(k+'T00:00');return d.getDate()+'. '+MON[d.getMonth()]+(d.getFullYear()!==today.getFullYear()?' '+d.getFullYear():'')}
 function range(){const e=addDays(weekStart,6);
   return (weekStart.getMonth()===e.getMonth()?weekStart.getDate()+'.':weekStart.getDate()+'. '+MON[weekStart.getMonth()])+' bis '+e.getDate()+'. '+MON[e.getMonth()]}
 let tt;function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),1600)}
-
-function render(){
-  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
-  const V={plan:[heroPlan,planView],stats:[heroStats,statsView],settings:[heroSettings,settingsView]}[tab];
-  document.getElementById('hero').innerHTML=ART+V[0]();
-  document.getElementById('app').innerHTML=V[1]();
-}
-
-function heroPlan(){
-  let filled=0,bars='';
-  for(let i=0;i<7;i++){const on=list(key(addDays(weekStart,i))).length>0;filled+=on;bars+=`<i class="${on?'on':''}"></i>`}
-  const isNow=key(weekStart)===key(monday(today));
-  return `<h1>Mittagessen</h1><p>${filled===7?'Die ganze Woche ist geplant.':filled+' von 7 Tagen geplant'}</p>
-    <div class="weeknav"><span class="lbl">KW ${isoWeek(weekStart)}<br><span style="font-weight:400;color:var(--hero-muted);font-size:.92rem">${range()}</span></span>
-    ${isNow?'':'<button class="now" data-act="today">Heute</button>'}
-    <button data-act="prev" aria-label="Vorige Woche">‹</button><button data-act="next" aria-label="Nächste Woche">›</button></div>
-    <div class="progress" aria-hidden="true">${bars}</div>`;
-}
-function heroSettings(){
-  return `<h1>Einstellungen</h1><p>Lege fest, was du mittags zur Auswahl haben möchtest.</p>`;
-}
+function ingCount(f){return f.ingredients.filter(i=>i.name&&i.name.trim()).length}
 
 const ART=`<svg class="art" viewBox="0 0 120 100" aria-hidden="true">
   <g fill="none" stroke="#B9CDBE" stroke-width="2.5" stroke-linecap="round" opacity=".8">
@@ -236,7 +276,135 @@ const ART=`<svg class="art" viewBox="0 0 120 100" aria-hidden="true">
   <path d="M46 50q6-8 12 0q-6 6-12 0z" fill="#6FA86A"/><path d="M78 62q7-5 10 2q-7 4-10-2z" fill="#6FA86A"/>
 </svg>`;
 
-function fmtDay(k){const d=new Date(k+'T00:00');return d.getDate()+'. '+MON[d.getMonth()]+(d.getFullYear()!==today.getFullYear()?' '+d.getFullYear():'')}
+function render(){
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
+  const V={plan:[heroPlan,planView],shop:[heroShop,shopView],dishes:[heroDishes,dishesView],stats:[heroStats,statsView],settings:[heroSettings,settingsView]}[tab];
+  document.getElementById('hero').innerHTML=ART+V[0]();
+  document.getElementById('app').innerHTML=V[1]();
+}
+function weekNav(){
+  const isNow=key(weekStart)===key(monday(today));
+  return `<div class="weeknav"><span class="lbl">KW ${isoWeek(weekStart)}<br><span style="font-weight:400;color:var(--hero-muted);font-size:.92rem">${range()}</span></span>
+    ${isNow?'':'<button class="now" data-act="today">Heute</button>'}
+    <button data-act="prev" aria-label="Vorige Woche">‹</button><button data-act="next" aria-label="Nächste Woche">›</button></div>`;
+}
+
+/* ---------- Plan ---------- */
+function heroPlan(){
+  let filled=0,bars='';
+  for(let i=0;i<7;i++){const on=list(key(addDays(weekStart,i))).length>0;filled+=on;bars+=`<i class="${on?'on':''}"></i>`}
+  return `<h1>Mittagessen</h1><p>${filled===7?'Die ganze Woche ist geplant.':filled+' von 7 Tagen geplant'}</p>`+weekNav()+`<div class="progress" aria-hidden="true">${bars}</div>`;
+}
+function needBackup(){
+  if(!S.foods.length&&!Object.keys(S.plan).length)return false;
+  return !S.lastBackup||(today-new Date(S.lastBackup+'T00:00'))/864e5>=30;
+}
+function planView(){
+  let h='';
+  if(needBackup())h+=`<div class="hint"><span>${S.lastBackup?'Deine letzte Sicherung ist über einen Monat alt.':'Sichere deine Daten, damit nichts verloren geht.'}</span><button data-act="export">Sichern</button></div>`;
+  if(!S.foods.length)h+=`<p class="note">Lege zuerst unter „Gerichte“ fest, was du zur Auswahl haben möchtest.</p>`;
+  for(let i=0;i<7;i++){
+    const d=addDays(weekStart,i),k=key(d),items=list(k);
+    const isToday=k===key(today),past=d<today;
+    h+=`<section class="day${isToday?' today':''}${past?' past':''}"><div class="dayhead"><span class="dl">${DL[i]}</span><span class="dt">${d.getDate()}. ${MON[d.getMonth()]}</span>${isToday?'<span class="pill">Heute</span>':''}</div><div class="lunch">`;
+    h+=items.map((it,j)=>{const n=nameOf(it),f=food(it.f);
+      const label=it.f==='order'?`<button class="open" data-act="order" data-day="${k}" data-i="${j}">${esc(n)}${it.r?'':' ›'}</button>`:f?`<button class="open" data-act="recipe" data-id="${f.id}">${esc(n)}${f.steps||ingCount(f)?' 📖':''}</button>`:esc(n);
+      return `<span class="tag" style="--h:${hue(n)}">${label}<button data-act="rm" data-day="${k}" data-i="${j}" aria-label="${esc(n)} entfernen">×</button></span>`}).join('');
+    h+=items.length?`<button class="add" data-act="open" data-day="${k}">+</button>`:`<button class="add big" data-act="open" data-day="${k}">+ Mittagessen auswählen</button>`;
+    h+=`</div></section>`;
+  }
+  return h;
+}
+
+/* ---------- Einkauf ---------- */
+function shopData(){
+  const wk=key(weekStart),agg={},missing={};
+  for(let i=0;i<7;i++){const day=addDays(weekStart,i);if(day<today)continue;for(const it of list(key(day))){
+    if(it.f==='order')continue;
+    const f=food(it.f);
+    if(!f||!ingCount(f)){const n=nameOf(it);missing[n]=f?f.id:null;continue}
+    for(const g of f.ingredients){
+      const nm=(g.name||'').trim();if(!nm)continue;
+      const unit=(g.unit||'').trim(),k=nm.toLowerCase()+'|'+unit.toLowerCase();
+      const a=agg[k]||(agg[k]={k,name:nm,unit,sum:0,has:false,loose:false,dishes:new Set(),first:null});
+      const dk=key(day);if(!a.first||dk<a.first)a.first=dk;
+      const n=num(g.amount);if(n!==null){a.sum+=n;a.has=true}else a.loose=true;
+      a.dishes.add(f.name);
+    }
+  }}
+  const rows=Object.values(agg).sort((a,b)=>a.first.localeCompare(b.first)||a.name.localeCompare(b.name,'de'));
+  return {wk,rows,missing,extra:S.extra[wk]||[]};
+}
+function heroShop(){
+  const {wk,rows,extra}=shopData();
+  const total=rows.length+extra.length,done=rows.filter(r=>S.checked[wk+'|'+r.k]).length+extra.filter(x=>x.done).length;
+  return `<h1>Einkauf</h1><p>${total?(total-done)+' von '+total+' noch zu besorgen':'Zutaten für die Gerichte ab heute'}</p>`+weekNav();
+}
+function dueLabel(k){
+  const diff=Math.round((new Date(k+'T00:00')-today)/864e5),d=new Date(k+'T00:00');
+  if(diff<=0)return 'Heute';
+  if(diff===1)return 'Bis morgen';
+  return 'Bis '+DN[(d.getDay()+6)%7]+'., '+d.getDate()+'. '+MON[d.getMonth()];
+}
+function shopView(){
+  const {wk,rows,missing,extra}=shopData();
+  let h=`<div class="card" style="margin-bottom:1rem"><label for="extra">Eigener Eintrag</label><div class="inrow"><input class="field" id="extra" placeholder="z. B. Kaffee" autocomplete="off" enterkeyhint="done"><button class="primary" data-act="addextra">Hinzufügen</button></div></div>`;
+  const items=[
+    ...rows.map(r=>({done:!!S.checked[wk+'|'+r.k],due:r.first,html:(d)=>`<li class="${d?'done':''}" data-act="check" data-k="${esc(r.k)}"><input type="checkbox" ${d?'checked':''} tabindex="-1" aria-hidden="true"><span class="nm">${esc(r.name)}<small><span class="due${(new Date(r.first+'T00:00')-today)/864e5<=1?' soon':''}">${dueLabel(r.first)}</span> für ${esc([...r.dishes].join(', '))}</small></span><span class="q">${r.has?fmtNum(r.sum)+(r.unit?' '+esc(r.unit):''):(r.unit?esc(r.unit):'')}${r.has&&r.loose?' +':''}</span></li>`,name:r.name})),
+    ...extra.map(x=>({done:!!x.done,due:'9999',html:(d)=>`<li class="${d?'done':''}" data-act="xcheck" data-id="${x.id}"><input type="checkbox" ${d?'checked':''} tabindex="-1" aria-hidden="true"><span class="nm">${esc(x.name)}<small>eigener Eintrag</small></span><button class="icon" data-act="xdel" data-id="${x.id}" aria-label="${esc(x.name)} entfernen">×</button></li>`,name:x.name}))
+  ].sort((a,b)=>a.done-b.done||a.due.localeCompare(b.due)||a.name.localeCompare(b.name,'de'));
+  if(items.length)h+=`<ul class="flist shop">`+items.map(i=>i.html(i.done)).join('')+`</ul>`;
+  else h+=`<p class="note">Für die kommenden Tage dieser Woche gibt es nichts einzukaufen. Vergangene Tage und Bestellungen zählen nicht mit, geplante Gerichte mit Rezept erscheinen hier mit ihren Zutaten.</p>`;
+  const m=Object.entries(missing);
+  if(m.length)h+=`<div class="miss">Ohne Zutatenliste und daher nicht auf der Liste: `+m.map(([n,id])=>id?`<button data-act="edit" data-id="${id}">${esc(n)}</button>`:esc(n)).join(', ')+`</div>`;
+  if(items.some(i=>i.done))h+=`<button class="ghost" data-act="uncheck">Alle Haken entfernen</button>`;
+  return h;
+}
+
+/* ---------- Gerichte & Rezepte ---------- */
+function heroDishes(){
+  if(editId&&food(editId)){return `<button class="back" data-act="back">‹ Alle Gerichte</button><h1 style="font-size:clamp(1.6rem,7vw,2.1rem)">${esc(food(editId).name)}</h1><p>Rezept bearbeiten</p>`}
+  const n=S.foods.length,r=S.foods.filter(f=>ingCount(f)).length;
+  return `<h1>Gerichte</h1><p>${n?n+' '+(n===1?'Gericht':'Gerichte')+', '+r+' mit Zutatenliste':'Lege deine Gerichte und Rezepte an.'}</p>`;
+}
+function dishesView(){
+  if(editId&&food(editId))return editorView(food(editId));
+  editId=null;
+  let h=`<div class="card"><label for="fname">Neues Gericht</label>
+    <div class="inrow"><input class="field" id="fname" placeholder="z. B. Hähnchen mit Reis" autocomplete="off" enterkeyhint="done"><button class="primary" data-act="addfood">Hinzufügen</button></div></div>`;
+  if(!S.foods.length)return h+`<p class="note">Noch leer. Alles, was du oben einträgst, steht dir danach im Plan zur Auswahl. Tippe ein Gericht an, um das Rezept zu ergänzen.</p>`;
+  h+=`<div class="sub"><h2>Deine Gerichte</h2><span>antippen zum Bearbeiten</span></div>`;
+  h+=`<ul class="flist">`+sorted().map(f=>{const c=ingCount(f);
+    return `<li class="link" data-act="edit" data-id="${f.id}"><span class="dot" style="--h:${hue(f.name)}"></span><span class="nm">${esc(f.name)}</span><span class="badge${c||f.steps?' ok':''}">${c?c+' '+(c===1?'Zutat':'Zutaten'):(f.steps?'Rezept':'kein Rezept')}</span><span class="chev">›</span></li>`}).join('')+`</ul>`;
+  return h;
+}
+function editorView(f){
+  let h=`<div class="card"><label for="ename">Name</label><input class="field" id="ename" data-field="name" value="${esc(f.name)}" autocomplete="off"></div>`;
+  h+=`<div class="card"><h2>Zutaten</h2><p class="info" style="margin-bottom:.7rem">Mengen für eine Mahlzeit. Daraus entsteht die Einkaufsliste.</p>`;
+  if(f.ingredients.length)h+=`<div class="ingh"><span>Menge</span><span>Einheit</span><span>Zutat</span><span></span></div>`;
+  h+=f.ingredients.map((g,i)=>`<div class="ing"><input class="field" inputmode="decimal" data-ing="${i}" data-k="amount" value="${esc(g.amount||'')}" placeholder="200" aria-label="Menge"><input class="field" list="units" data-ing="${i}" data-k="unit" value="${esc(g.unit||'')}" placeholder="g" aria-label="Einheit"><input class="field" data-ing="${i}" data-k="name" value="${esc(g.name||'')}" placeholder="Zutat" aria-label="Zutat"><button class="icon" data-act="ingdel" data-i="${i}" aria-label="Zutat entfernen">×</button></div>`).join('');
+  h+=`<button class="sec" data-act="ingadd" style="width:100%;margin-top:.3rem">+ Zutat hinzufügen</button></div>`;
+  h+=`<div class="card"><h2>Zubereitung</h2><textarea class="field" id="esteps" data-field="steps" placeholder="Schritt für Schritt, wie du das Gericht zubereitest" style="margin-top:.5rem">${esc(f.steps||'')}</textarea></div>`;
+  h+=`<button class="primary" data-act="back" style="width:100%">Fertig</button><button class="danger" data-act="delfood" data-id="${f.id}">Gericht löschen</button>`;
+  return h;
+}
+function recipeHtml(f){
+  const ings=f.ingredients.filter(g=>(g.name||'').trim());
+  let h='';
+  if(ings.length)h+=`<h3 class="cat" style="margin-top:.2rem">Zutaten</h3><ul class="rlist">`+ings.map(g=>{const n=num(g.amount);return `<li><span class="am">${n!==null?fmtNum(n):esc(g.amount||'')} ${esc(g.unit||'')}</span><span>${esc(g.name)}</span></li>`}).join('')+`</ul>`;
+  if((f.steps||'').trim())h+=`<h3 class="cat">Zubereitung</h3><p class="steps">${esc(f.steps)}</p>`;
+  if(!h)h=`<p class="note">Für dieses Gericht ist noch kein Rezept hinterlegt.</p>`;
+  return h+`<button class="sec" data-act="edit" data-id="${f.id}" style="width:100%;margin-top:1rem">Rezept bearbeiten</button>`;
+}
+function openRecipe(id){
+  const f=food(id);if(!f)return;recipeId=id;
+  document.getElementById('rtitle').textContent=f.name;
+  document.getElementById('rbody').innerHTML=recipeHtml(f);
+  document.getElementById('recipewrap').classList.add('open');
+}
+function closeRecipe(){document.getElementById('recipewrap').classList.remove('open');recipeId=null;orderRef=null}
+
+/* ---------- Statistik ---------- */
 function statData(){
   const agg={};let days=0,total=0;
   for(const k in S.plan){const l=S.plan[k];if(!l.length)continue;days++;
@@ -257,34 +425,31 @@ function statsView(){
   return `<div class="sub"><h2>Wie oft geplant</h2><span>alle Wochen</span></div><ul class="flist stats">`+rows.map(([n,a],i)=>`<li class="${a.n?'':'zero'}" style="--h:${hue(n)}"><span class="rk">${a.n?i+1+'.':''}</span><span class="nm">${esc(n)}</span><span class="ct">${a.n}×</span><span class="bar"><i style="width:${a.n/max*100}%"></i></span><span class="last">${a.n?'Zuletzt am '+fmtDay(a.last):'Noch nie geplant'}</span></li>`).join('')+`</ul>`;
 }
 
-function needBackup(){
-  if(!S.foods.length&&!Object.keys(S.plan).length)return false;
-  return !S.lastBackup||(today-new Date(S.lastBackup+'T00:00'))/864e5>=30;
-}
-function backupHtml(){
-  return `<div class="card" style="margin-top:1.4rem"><h2>Datensicherung</h2>
-    <p class="info">${S.lastBackup?'Letzte Sicherung am '+fmtDay(S.lastBackup)+'.':'Noch keine Sicherung erstellt.'} Die Sicherung landet als Datei in deinen Downloads und lässt sich jederzeit wieder einlesen.</p>
+/* ---------- Optionen ---------- */
+function heroSettings(){return `<h1>Optionen</h1><p>Darstellung, Restaurants und Datensicherung.</p>`}
+function settingsView(){
+  const th=[['auto','Automatisch'],['light','Hell'],['dark','Dunkel']];
+  let h=`<div class="card"><h2>Darstellung</h2><div class="seg" role="group" aria-label="Darstellung" style="margin-top:.6rem">`+th.map(([v,l])=>`<button class="${S.theme===v?'on':''}" data-act="theme" data-v="${v}" aria-pressed="${S.theme===v}">${l}</button>`).join('')+`</div><p class="info" style="margin-top:.55rem">„Automatisch“ folgt der Einstellung deines Handys.</p></div>`;
+  h+=`<div class="card"><h2>Restaurants</h2><p class="info" style="margin-bottom:.7rem">Zur Auswahl, wenn du im Plan „Bestellen“ wählst.</p><div class="inrow"><input class="field" id="rname" placeholder="z. B. Pizzeria Roma" autocomplete="off" enterkeyhint="done"><button class="primary" data-act="addrest">Hinzufügen</button></div>`;
+  if(S.restaurants.length)h+=`<ul class="flist" style="margin-top:.8rem;box-shadow:none">`+[...S.restaurants].sort((a,b)=>a.name.localeCompare(b.name,'de')).map(r=>`<li><span class="nm">🛵 ${esc(r.name)}</span><button class="icon" data-act="renrest" data-id="${r.id}" aria-label="${esc(r.name)} umbenennen">✎</button><button class="icon" data-act="delrest" data-id="${r.id}" aria-label="${esc(r.name)} löschen">×</button></li>`).join('')+`</ul>`;
+  h+=`</div>`;
+  return h+`<div class="card"><h2>Datensicherung</h2>
+    <p class="info">${S.lastBackup?'Letzte Sicherung am '+fmtDay(S.lastBackup)+'.':'Noch keine Sicherung erstellt.'} Die Sicherung enthält Gerichte, Rezepte, Restaurants, Plan und Einkaufsliste und landet als Datei in deinen Downloads.</p>
     <div class="row2"><button class="primary" data-act="export">Sicherung speichern</button><button class="sec" data-act="import">Sicherung laden</button></div>
-    <label class="tg"><input type="checkbox" id="autobk" ${S.auto?'checked':''}><span>Automatisch sichern<small>Bei der ersten Änderung eines Tages wird eine Sicherung in deinen Downloads abgelegt.</small></span></label></div>`;
+    <label class="tg"><input type="checkbox" id="autobk" ${S.auto?'checked':''}><span>Automatisch sichern<small>Bei der ersten Änderung eines Tages wird eine Sicherung in deinen Downloads abgelegt.</small></span></label></div>
+    <button class="ghost" data-act="clearplan">Gesamten Plan leeren</button>`;
 }
+
+/* ---------- Sicherung ---------- */
 function download(){
-  const data=JSON.stringify({app:'mittagsplan',v:1,date:new Date().toISOString(),foods:S.foods,plan:S.plan});
+  const data=JSON.stringify({app:'mittagsplan',v:2,date:new Date().toISOString(),foods:S.foods,plan:S.plan,checked:S.checked,extra:S.extra,restaurants:S.restaurants});
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));
   a.download='Mittagsplan-Sicherung-'+key(new Date())+'.json';
   document.body.appendChild(a);a.click();
   setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);
 }
-function exportData(){
-  download();S.lastBackup=key(new Date());
-  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
-  render();toast('Sicherung gespeichert');
-}
-document.addEventListener('change',e=>{
-  if(e.target.id!=='autobk')return;
-  S.auto=e.target.checked;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(err){}
-  toast(S.auto?'Automatische Sicherung an':'Automatische Sicherung aus');
-});
+function exportData(){download();S.lastBackup=key(new Date());store();render();toast('Sicherung gespeichert')}
 document.getElementById('importfile').addEventListener('change',e=>{
   const file=e.target.files[0];e.target.value='';if(!file)return;
   const r=new FileReader();
@@ -294,45 +459,34 @@ document.getElementById('importfile').addEventListener('change',e=>{
       if(!d||!Array.isArray(d.foods)||typeof d.plan!=='object')throw 0;
       const when=d.date?' vom '+fmtDay(key(new Date(d.date))):'';
       if(!confirm('Sicherung'+when+' laden? Die aktuellen Daten in der App werden dabei ersetzt.'))return;
-      S={foods:d.foods,plan:d.plan,lastBackup:S.lastBackup,auto:S.auto};save();render();toast('Sicherung geladen');
+      const keep={lastBackup:S.lastBackup,auto:S.auto,theme:S.theme};
+      S=norm(d);S.lastBackup=keep.lastBackup;S.auto=keep.auto;S.theme=keep.theme;store();editId=null;render();toast('Sicherung geladen');
     }catch(err){toast('Diese Datei ist keine gültige Sicherung')}
   };
   r.readAsText(file);
 });
 
-function planView(){
-  let h='';
-  if(needBackup())h+=`<div class="hint"><span>${S.lastBackup?'Deine letzte Sicherung ist über einen Monat alt.':'Sichere deine Daten, damit nichts verloren geht.'}</span><button data-act="export">Sichern</button></div>`;
-  if(!S.foods.length)h+=`<p class="note">Lege zuerst in den Einstellungen deine Lebensmittel an.</p>`;
-  for(let i=0;i<7;i++){
-    const d=addDays(weekStart,i),k=key(d),items=list(k);
-    const isToday=k===key(today),past=d<today;
-    h+=`<section class="day${isToday?' today':''}${past?' past':''}"><div class="dayhead"><span class="dl">${DL[i]}</span><span class="dt">${d.getDate()}. ${MON[d.getMonth()]}</span>${isToday?'<span class="pill">Heute</span>':''}</div><div class="lunch">`;
-    h+=items.map((it,j)=>{const n=nameOf(it);return `<span class="tag" style="--h:${hue(n)}">${esc(n)}<button data-act="rm" data-day="${k}" data-i="${j}" aria-label="${esc(n)} entfernen">×</button></span>`}).join('');
-    h+=items.length?`<button class="add" data-act="open" data-day="${k}">+</button>`:`<button class="add big" data-act="open" data-day="${k}">+ Mittagessen auswählen</button>`;
-    h+=`</div></section>`;
-  }
-  return h;
-}
-
-function settingsView(){
-  let h=`<div class="card"><label for="fname">Neues Lebensmittel</label>
-    <div class="inrow"><input class="field" id="fname" placeholder="z. B. Hähnchen mit Reis" autocomplete="off" enterkeyhint="done"><button class="primary" data-act="addfood">Hinzufügen</button></div></div>`;
-  h+=`<div class="sub"><h2>Deine Auswahl</h2><span>${S.foods.length} ${S.foods.length===1?'Eintrag':'Einträge'}</span></div>`;
-  if(!S.foods.length)return h+`<p class="note">Noch leer. Alles, was du oben einträgst, steht dir danach im Plan zur Auswahl.</p>`+backupHtml();
-  h+=`<ul class="flist">`+sorted().map(f=>`<li><span class="dot" style="--h:${hue(f.name)}"></span><span class="nm">${esc(f.name)}</span><button class="icon" data-act="rename" data-id="${f.id}" aria-label="${esc(f.name)} umbenennen">✎</button><button class="icon" data-act="delfood" data-id="${f.id}" aria-label="${esc(f.name)} löschen">×</button></li>`).join('')+`</ul>`;
-  return h+backupHtml()+`<button class="ghost" data-act="clearplan">Gesamten Plan leeren</button>`;
-}
-
+/* ---------- Auswahl-Sheet ---------- */
 function sheetRender(){
   const q=document.getElementById('search').value.trim().toLowerCase();
   const items=list(sheetDay);
   const fs=sorted().filter(f=>f.name.toLowerCase().includes(q));
   let h;
-  if(!S.foods.length)h=`<p class="note">Du hast noch keine Lebensmittel angelegt.</p><button class="primary" data-act="gosettings">Zu den Einstellungen</button>`;
-  else if(!fs.length)h=`<p class="note">Nichts gefunden. Neue Einträge legst du in den Einstellungen an.</p>`;
+  if(!S.foods.length)h=`<p class="note">Du hast noch keine Gerichte angelegt.</p><button class="primary" data-act="godishes">Zu den Gerichten</button>`;
+  else if(!fs.length)h=`<p class="note">Nichts gefunden. Neue Gerichte legst du unter „Gerichte“ an.</p>`;
   else h=`<div class="picks">`+fs.map(f=>`<button class="pick${items.some(x=>x.f===f.id)?' in':''}" style="--h:${hue(f.name)}" data-act="pick" data-id="${f.id}">${esc(f.name)}</button>`).join('')+`</div>`;
+  const ord=items.some(x=>x.f==='order');
+  if(!q||'bestellen'.includes(q))h=`<div class="picks" style="margin-bottom:1rem"><button class="pick${ord?' in':''}" style="--h:28" data-act="pickorder">🛵 Bestellen</button></div>`+h;
   document.getElementById('sheetbody').innerHTML=h;
+}
+function openOrder(day,i){
+  const it=list(day)[i];if(!it)return;orderRef={day,i};
+  document.getElementById('rtitle').textContent='Bestellt bei';
+  let h;
+  if(!S.restaurants.length)h=`<p class="note">Du hast noch keine Restaurants angelegt.</p><button class="primary" data-act="gosettings" style="width:100%">Restaurants festlegen</button>`;
+  else h=`<div class="picks">`+[...S.restaurants].sort((a,b)=>a.name.localeCompare(b.name,'de')).map(r=>`<button class="pick${it.r===r.id?' in':''}" style="--h:${hue('🛵 '+r.name)}" data-act="setrest" data-id="${r.id}">${esc(r.name)}</button>`).join('')+`<button class="pick${!it.r?' in':''}" style="--h:28" data-act="setrest" data-id="">Noch offen</button></div>`;
+  document.getElementById('rbody').innerHTML=h;
+  document.getElementById('recipewrap').classList.add('open');
 }
 function openSheet(k){
   sheetDay=k;const d=new Date(k+'T00:00');
@@ -342,37 +496,79 @@ function openSheet(k){
 }
 function closeSheet(){document.getElementById('sheetwrap').classList.remove('open');sheetDay=null;render()}
 
+/* ---------- Ereignisse ---------- */
 document.addEventListener('click',e=>{
   const t=e.target.closest('[data-tab],[data-act]');if(!t)return;
-  if(t.dataset.tab){tab=t.dataset.tab;render();scrollTo(0,0);return}
+  if(t.dataset.tab){tab=t.dataset.tab;if(tab!=='dishes')editId=null;render();scrollTo(0,0);return}
   const a=t.dataset.act;
   if(a==='prev'||a==='next'){weekStart=addDays(weekStart,a==='prev'?-7:7);render()}
-  else if(a==='export')exportData();
-  else if(a==='import')document.getElementById('importfile').click();
   else if(a==='today'){weekStart=monday(today);render()}
   else if(a==='open')openSheet(t.dataset.day);
   else if(a==='close')closeSheet();
-  else if(a==='gosettings'){closeSheet();tab='settings';render()}
+  else if(a==='godishes'){closeSheet();tab='dishes';render()}
   else if(a==='pick'){const f=food(t.dataset.id),l=list(sheetDay,true),j=l.findIndex(x=>x.f===f.id);
     if(j>=0)l.splice(j,1);else l.push({f:f.id,name:f.name});save();sheetRender()}
   else if(a==='rm'){list(t.dataset.day).splice(+t.dataset.i,1);save();render()}
+  else if(a==='recipe')openRecipe(t.dataset.id);
+  else if(a==='order')openOrder(t.dataset.day,+t.dataset.i);
+  else if(a==='pickorder'){const l=list(sheetDay,true),j=l.findIndex(x=>x.f==='order');
+    if(j>=0){l.splice(j,1);save();sheetRender();return}
+    l.push({f:'order',r:null});save();const day=sheetDay;closeSheet();openOrder(day,l.length-1)}
+  else if(a==='setrest'){const it=orderRef&&list(orderRef.day)[orderRef.i];
+    if(it){const r=rest(t.dataset.id);it.r=r?r.id:null;it.rname=r?r.name:'';save()}closeRecipe();render()}
+  else if(a==='gosettings'){closeRecipe();tab='settings';editId=null;render();scrollTo(0,0)}
+  else if(a==='theme'){S.theme=t.dataset.v;store();applyTheme();render()}
+  else if(a==='addrest'){const inp=document.getElementById('rname'),n=inp.value.trim();
+    if(!n){toast('Bitte einen Namen eingeben');inp.focus();return}
+    if(S.restaurants.some(r=>r.name.toLowerCase()===n.toLowerCase())){toast('„'+n+'“ gibt es schon');return}
+    S.restaurants.push({id:uid(),name:n});save();render();toast('„'+n+'“ hinzugefügt');document.getElementById('rname').focus()}
+  else if(a==='renrest'){const r=rest(t.dataset.id),n=(prompt('Neuer Name',r.name)||'').trim();
+    if(!n||n===r.name)return;
+    if(S.restaurants.some(x=>x.id!==r.id&&x.name.toLowerCase()===n.toLowerCase())){toast('„'+n+'“ gibt es schon');return}
+    r.name=n;save();render()}
+  else if(a==='delrest'){const r=rest(t.dataset.id);
+    if(confirm('„'+r.name+'“ löschen? Bereits geplante Bestellungen behalten den Namen.')){S.restaurants=S.restaurants.filter(x=>x.id!==r.id);save();render()}}
+  else if(a==='rclose')closeRecipe();
+  else if(a==='edit'){closeRecipe();tab='dishes';editId=t.dataset.id;render();scrollTo(0,0)}
+  else if(a==='back'){editId=null;render();scrollTo(0,0)}
   else if(a==='addfood'){const inp=document.getElementById('fname'),n=inp.value.trim();
     if(!n){toast('Bitte einen Namen eingeben');inp.focus();return}
     if(S.foods.some(f=>f.name.toLowerCase()===n.toLowerCase())){toast('„'+n+'“ gibt es schon');return}
-    S.foods.push({id:uid(),name:n});save();render();toast('„'+n+'“ hinzugefügt');document.getElementById('fname').focus()}
-  else if(a==='rename'){const f=food(t.dataset.id),n=(prompt('Neuer Name',f.name)||'').trim();
-    if(!n||n===f.name)return;
-    if(S.foods.some(x=>x.id!==f.id&&x.name.toLowerCase()===n.toLowerCase())){toast('„'+n+'“ gibt es schon');return}
-    f.name=n;save();render()}
+    S.foods.push({id:uid(),name:n,ingredients:[],steps:''});save();render();toast('„'+n+'“ hinzugefügt');document.getElementById('fname').focus()}
+  else if(a==='ingadd'){const f=food(editId);f.ingredients.push({amount:'',unit:'',name:''});store();render();
+    const ins=document.querySelectorAll('[data-k="amount"]');if(ins.length)ins[ins.length-1].focus()}
+  else if(a==='ingdel'){const f=food(editId);f.ingredients.splice(+t.dataset.i,1);save();render()}
   else if(a==='delfood'){const f=food(t.dataset.id);
-    if(confirm('„'+f.name+'“ löschen? Bereits geplante Tage behalten den Eintrag.')){S.foods=S.foods.filter(x=>x.id!==f.id);save();render()}}
-  else if(a==='clearplan'){if(confirm('Alle geplanten Tage löschen? Deine Lebensmittel bleiben erhalten.')){S.plan={};save();toast('Plan geleert')}}
+    if(confirm('„'+f.name+'“ samt Rezept löschen? Bereits geplante Tage behalten den Eintrag.')){S.foods=S.foods.filter(x=>x.id!==f.id);editId=null;save();render()}}
+  else if(a==='check'){const k=key(weekStart)+'|'+t.dataset.k;if(S.checked[k])delete S.checked[k];else S.checked[k]=1;save();render()}
+  else if(a==='xcheck'){const x=(S.extra[key(weekStart)]||[]).find(x=>x.id===t.dataset.id);if(x){x.done=!x.done;save();render()}}
+  else if(a==='xdel'){e.stopPropagation();const wk=key(weekStart);S.extra[wk]=(S.extra[wk]||[]).filter(x=>x.id!==t.dataset.id);save();render()}
+  else if(a==='addextra'){const inp=document.getElementById('extra'),n=inp.value.trim();if(!n){inp.focus();return}
+    const wk=key(weekStart);(S.extra[wk]||(S.extra[wk]=[])).push({id:uid(),name:n,done:false});save();render();document.getElementById('extra').focus()}
+  else if(a==='uncheck'){const wk=key(weekStart);for(const k in S.checked)if(k.startsWith(wk+'|'))delete S.checked[k];(S.extra[wk]||[]).forEach(x=>x.done=false);save();render()}
+  else if(a==='export')exportData();
+  else if(a==='import')document.getElementById('importfile').click();
+  else if(a==='clearplan'){if(confirm('Alle geplanten Tage löschen? Gerichte und Rezepte bleiben erhalten.')){S.plan={};S.checked={};S.extra={};save();render();toast('Plan geleert')}}
+});
+document.addEventListener('change',e=>{
+  const el=e.target;
+  if(el.id==='autobk'){S.auto=el.checked;store();toast(S.auto?'Automatische Sicherung an':'Automatische Sicherung aus');return}
+  const f=editId&&food(editId);if(!f)return;
+  if(el.dataset.ing!==undefined){const g=f.ingredients[+el.dataset.ing];if(g){g[el.dataset.k]=el.value.trim();save()}}
+  else if(el.dataset.field==='steps'){f.steps=el.value;save()}
+  else if(el.dataset.field==='name'){const n=el.value.trim();
+    if(!n){el.value=f.name;return}
+    if(S.foods.some(x=>x.id!==f.id&&x.name.toLowerCase()===n.toLowerCase())){toast('„'+n+'“ gibt es schon');el.value=f.name;return}
+    f.name=n;save();document.getElementById('hero').innerHTML=ART+heroDishes()}
 });
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'&&sheetDay)closeSheet();
+  if(e.key==='Escape'){if(recipeId||orderRef)closeRecipe();else if(sheetDay)closeSheet()}
   if(e.key==='Enter'&&e.target.id==='fname')document.querySelector('[data-act="addfood"]').click();
+  if(e.key==='Enter'&&e.target.id==='rname')document.querySelector('[data-act="addrest"]').click();
+  if(e.key==='Enter'&&e.target.id==='extra')document.querySelector('[data-act="addextra"]').click();
 });
 document.getElementById('search').addEventListener('input',sheetRender);
+applyTheme();
 render();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{});
